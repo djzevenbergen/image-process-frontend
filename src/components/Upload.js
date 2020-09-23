@@ -16,6 +16,9 @@ import { Jumbotron, Navbar, Nav, Col } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'antd/dist/antd.css';
 
+import S3 from 'react-aws-s3';
+
+
 
 const theme = {
   font: 'Courier',
@@ -34,9 +37,23 @@ const Upload = (props) => {
   const context = useContext(MyContext);
   const [user, setUser] = useState(null);
   const auth = firebase.auth();
+
+
+  const config = {
+    bucketName: process.env.AWS_BUCKET_NAME,
+    dirName: 'pre-effect', /* optional */
+    region: 'eu-west-1',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  }
+
+
   const [deleteBool, setDeleteBool] = useState(false);
 
 
+  const uploadFiles = () => {
+
+  }
 
 
   useEffect(() => {
@@ -53,10 +70,14 @@ const Upload = (props) => {
 
 
       {user ? <div>
-        <form>
+        <form onSubmit={uploadFiles()}>
           <div><h2>Upload images</h2></div>
           <h3>Images</h3>
           <input type="file" multiple />
+          <label for="amazon">Amazon<input name="amazon" type="checkbox" value="amazon" /></label>
+          <label for="shopify">Shopify<input name="shopify" type="checkbox" value="shopify" /></label>
+
+          <button type="submit">Submit</button>
         </form>
 
 
